@@ -3,6 +3,10 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const app = express();
 const { Sequelize, DataTypes } = require("sequelize");
+const passport = require("passport");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const PassportLocal = require("passport-local").Strategy;
 
 //Conexion Base de datos
 const sequelize = new Sequelize("mydb", "root", "", {
@@ -19,8 +23,38 @@ async function testDatabase() {
     console.error("Unable to connect to the database:", error);
   }
 }
-
 testDatabase();
+
+//Configuracion Passport (Libreria para iniciar session)
+app.use(cookieParser("secreto"));
+app.use(
+  session({
+    secret: "secreto",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Configuracion de la atentificacion de Passport
+passport.use(
+  new PassportLocal(function (username, password, done) {
+    if (username === "gabriel" && password === "1234")
+      return done(null, { id: 1, name: "gabriel" });
+
+    done(null, false);
+  })
+);
+//Serilizacion del inicio de sesion
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+//Deserializacion del inicio de sesion
+passport.deserializeUser(function (id, done) {
+  done(null, { id: 1, name: "gabriel" });
+});
 
 //Creacion de modelo
 const Tique = sequelize.define(
@@ -70,9 +104,31 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+//Rutas Aplicacion
+
+app.get(
+  "/",
+  (req, res, next) => {
+    if (req.isAuthenticated()) return next();
+
+    res.redirect("/login");
+  },
+  (req, res) => {
+    res.render("ejecutivo-mesa.ejs");
+  }
+);
+
+app.get("/login", (req, res) => {
   res.render("signup.ejs");
 });
+
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
+);
 
 app.get("/crear-tique", (req, res) => {
   res.render("ejecutivo-mesa.ejs");
