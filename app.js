@@ -40,23 +40,45 @@ app.use(passport.session());
 
 //Configuracion de la atentificacion de Passport
 passport.use(
-  new PassportLocal(function (username, password, done) {
-    if (username === "gabriel" && password === "1234")
-      return done(null, { id: 1, name: "gabriel" });
+  new PassportLocal(async function (username, password, done) {
+    const userLogin = await User.findOne({
+      where: { username: username, password: password },
+    });
+    console.log("usuario", userLogin);
+    if (userLogin !== null) return done(null, userLogin);
 
     done(null, false);
   })
 );
 //Serilizacion del inicio de sesion
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  console.log("datos serializados", user.dataValues);
+  done(null, user.dataValues);
 });
 //Deserializacion del inicio de sesion
-passport.deserializeUser(function (id, done) {
-  done(null, { id: 1, name: "gabriel" });
+passport.deserializeUser(function (user, done) {
+  console.log("datos deserializdos ", user);
+  done(null, user);
 });
 
-//Creacion de modelo
+//Creacion de modelos
+const User = sequelize.define(
+  "usuarios",
+  {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
 const Tique = sequelize.define(
   "tiques",
   {
@@ -110,7 +132,6 @@ app.get(
   "/",
   (req, res, next) => {
     if (req.isAuthenticated()) return next();
-
     res.redirect("/login");
   },
   (req, res) => {
