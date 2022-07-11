@@ -284,6 +284,78 @@ app.get("/jefe-mesa", async (req, res) => {
   res.render("jefe-mesa.ejs", { tiques: tiques });
 });
 
+app.post("/agregar-usuario", async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.create({
+    username: username,
+    password: password,
+  }).catch((err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  res.redirect("/jefe-mesa");
+});
+
+app.post("/eliminar-tique", (req, res) => {
+  const id = req.body.id;
+  Tique.destroy({
+    where: {
+      id: id,
+    },
+  }).catch((err) => {
+    console.log(err);
+  });
+
+  res.redirect("/jefe-mesa");
+});
+
+app.get("/editar/tique/:id", async (req, res) => {
+  const id = req.params.id;
+  const tiqueEdit = await Tique.findOne({ where: { id: id } });
+
+  console.log("Usuario a editar: ", tiqueEdit);
+  res.render("edit-tique.ejs", { tique: tiqueEdit });
+});
+
+app.post("/editar-tique", (req, res) => {
+  const id = req.body.id;
+  const nombre = req.body.nombre;
+  const rut = req.body.rut;
+  const telefono = req.body.telefono;
+  const correo = req.body.correo;
+  const criticidad = req.body.criticidad;
+  const detalleServicio = req.body.detalleServicio;
+  const detalleProblema = req.body.detalleProblema;
+  const area = req.body.area;
+  const tipoTique = req.body.tipoTique;
+
+  Tique.update(
+    {
+      nombre_cliente: nombre,
+      rut_cliente: rut,
+      telefono_cliente: telefono,
+      correo_cliente: correo,
+      criticidad: criticidad,
+      detalle_servicio: detalleServicio,
+      detalle_problema: detalleProblema,
+      area_id: area,
+      tipo_tique_id: tipoTique,
+      estado_tique_id: 1,
+    },
+    {
+      where: {
+        id: id,
+      },
+    }
+  );
+
+  res.redirect("/jefe-mesa");
+});
+
 async function syncAllModels() {
   await sequelize.sync();
   console.log("All models were synchronized successfully.");

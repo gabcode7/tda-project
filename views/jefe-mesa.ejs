@@ -68,6 +68,7 @@
           <th>Area</th>
           <th>Tipo Tique</th>
           <th>Estado tique</th>
+          <th>Acciones</th>
         </thead>
         <tbody>
           <% tiques.map((tique)=> { %>
@@ -84,11 +85,52 @@
             <td><%=tique.dataValues.usuario_cerrador_id%></td>
             <td><%=tique.dataValues.area_id%></td>
             <td><%=tique.dataValues.tipo_tique_id%></td>
-            <td><%=tique.dataValues.estado_tique%></td>
+            <td><%=tique.dataValues.estado_tique_id%></td>
+            <td>
+              <a href="/editar/tique/<%=tique.dataValues.id%>"
+                ><img width="30px" src="img/pencil.png"
+              /></a>
+              <form
+                action="/eliminar-tique"
+                method="post"
+                style="display: inline-block"
+              >
+                <input
+                  type="hidden"
+                  name="id"
+                  value="<%=tique.dataValues.id%>"
+                />
+                <button
+                  type="submit"
+                  style="border: none; background-color: transparent"
+                >
+                  <img src="img/remove.png" width="30px" />
+                </button>
+              </form>
+            </td>
           </tr>
           <% })%>
         </tbody>
       </table>
+    </div>
+
+    <h1 class="main-title">Crear Usuarios</h1>
+    <div class="container-agregar-ticket">
+      <form action="/agregar-usuario" method="post">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" />
+        <label class="form-label">Password</label>
+        <input type="text" name="password" class="form-control" />
+        <div class="center">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            style="margin-top: 1rem"
+          >
+            Crear Usuario
+          </button>
+        </div>
+      </form>
     </div>
 
     <script
