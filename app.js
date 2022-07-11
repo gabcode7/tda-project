@@ -82,6 +82,11 @@ const User = sequelize.define(
 const Tique = sequelize.define(
   "tiques",
   {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     rut_cliente: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -109,6 +114,18 @@ const Tique = sequelize.define(
     criticidad: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    area_id: {
+      type: DataTypes.INTEGER,
+    },
+    tipo_tique_id: {
+      type: DataTypes.INTEGER,
+    },
+    estado_tique_id: {
+      type: DataTypes.INTEGER,
+    },
+    usuario_creador_id: {
+      type: DataTypes.INTEGER,
     },
   },
   {
@@ -156,6 +173,7 @@ app.get("/crear-tique", (req, res) => {
 });
 
 app.post("/crear-tique", (req, res) => {
+  console.log("sesion", req.session);
   const nombre = req.body.nombre;
   const rut = req.body.rut;
   const telefono = req.body.telefono;
@@ -163,6 +181,8 @@ app.post("/crear-tique", (req, res) => {
   const criticidad = req.body.criticidad;
   const detalleServicio = req.body.detalleServicio;
   const detalleProblema = req.body.detalleProblema;
+  const area = req.body.area;
+  const tipoTique = req.body.tipoTique;
 
   Tique.create({
     nombre_cliente: nombre,
@@ -172,6 +192,10 @@ app.post("/crear-tique", (req, res) => {
     criticidad: criticidad,
     detalle_servicio: detalleServicio,
     detalle_problema: detalleProblema,
+    area_id: area,
+    tipo_tique_id: tipoTique,
+    estado_tique_id: 1,
+    usuario_creador_id: req.session.passport.user.id,
   }).catch((err) => {
     if (err) {
       console.log(err);
@@ -180,6 +204,13 @@ app.post("/crear-tique", (req, res) => {
 
   res.redirect("/crear-tique");
 });
+
+async function syncAllModels() {
+  await sequelize.sync();
+  console.log("All models were synchronized successfully.");
+}
+
+syncAllModels();
 
 app.listen(3000, (req, res) => {
   console.log("Servidor corriendo en el puerto 3000!");

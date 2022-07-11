@@ -1,0 +1,43 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f9f7f7;
+}
+
+label {
+  font-weight: 500;
+  font-size: 17px;
+}
+
+input {
+  border-radius: 12px;
+  height: 40px;
+}
+
+select {
+  border-radius: 12px;
+  height: 40px;
+}
+
+.center {
+  text-align: center;
+}
+
+.main-title {
+  margin-top: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+}
+
+.nav-bgc {
+  background-color: #fff !important;
+}
+
+.container-agregar-ticket {
+  background-color: #fff;
+  width: 30%;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0px 0px 13px -2px rgba(0, 0, 0, 0.4);
+}
