@@ -62,6 +62,79 @@ passport.deserializeUser(function (user, done) {
 });
 
 //Creacion de modelos
+const Area = sequelize.define("areas", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  nombre: DataTypes.STRING,
+});
+
+const EstadoTique = sequelize.define(
+  "estados_tique",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    estado: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+const EstadoUsuario = sequelize.define(
+  "estados_usuario",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    estado: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+const TiposTique = sequelize.define(
+  "tipos_tique",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    tipo: DataTypes.STRING,
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+const TiposUsuario = sequelize.define(
+  "tipos_usuario",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    tipo: Sequelize.STRING,
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
 const User = sequelize.define(
   "usuarios",
   {
@@ -203,6 +276,12 @@ app.post("/crear-tique", (req, res) => {
   });
 
   res.redirect("/crear-tique");
+});
+
+app.get("/jefe-mesa", async (req, res) => {
+  const tiques = await Tique.findAll();
+  console.log("Todos los tiques", tiques);
+  res.render("jefe-mesa.ejs", { tiques: tiques });
 });
 
 async function syncAllModels() {
