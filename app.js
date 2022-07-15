@@ -356,6 +356,42 @@ app.post("/editar-tique", (req, res) => {
   res.redirect("/jefe-mesa");
 });
 
+app.get("/ejecutivo-area", async (req, res) => {
+  const tiquesArea = await Tique.findAll({
+    where: {
+      area_id: 1,
+    },
+  });
+
+  res.render("ejecutivo-area.ejs", { tiques: tiquesArea });
+});
+
+app.get("/cerrar/tique/:id", async (req, res) => {
+  const tiqueCerrarId = req.params.id;
+  const tiqueCerrar = await Tique.findOne({
+    where: {
+      id: tiqueCerrarId,
+    },
+  });
+  res.render("cerrar-tique.ejs", { tique: tiqueCerrar });
+});
+
+app.post("/cerrar-tique", async (req, res) => {
+  const id = req.body.id;
+  const observacion = req.body.observacion;
+  console.log("parametros", id, observacion);
+  await Tique.update(
+    { observacion: observacion },
+    {
+      where: {
+        id: id,
+      },
+    }
+  );
+
+  res.redirect("/ejecutivo-area");
+});
+
 async function syncAllModels() {
   await sequelize.sync();
   console.log("All models were synchronized successfully.");

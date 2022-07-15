@@ -51,71 +51,14 @@
     </nav>
     <h1 class="main-title">Editar Ticket</h1>
     <div class="container-agregar-ticket">
-      <form action="/editar-tique" method="post">
-        <label class="form-label">Rut cliente</label>
+      <form action="/cerrar-tique" method="post">
+        <label class="form-label">observacion</label>
         <input
           type="text"
-          name="rut"
+          name="observacion"
           class="form-control"
-          placeholder="<%=tique.dataValues.rut_cliente%>"
+          placeholder="Ingrese observacion"
         /><br />
-        <label class="form-label">Nombre cliente</label>
-        <input
-          type="text"
-          name="nombre"
-          class="form-control"
-          placeholder="<%=tique.dataValues.nombre_cliente%>"
-        /><br />
-        <label class="form-label">Telefono cliente</label>
-        <input
-          type="int"
-          name="telefono"
-          class="form-control"
-          placeholder="<%=tique.dataValues.telefono_cliente%>"
-        /><br />
-        <label class="form-label">Correo electronico cliente</label>
-        <input
-          type="text"
-          name="correo"
-          class="form-control"
-          placeholder="<%=tique.dataValues.correo_cliente%>"
-        /><br />
-        <label class="form-label">Detalle problema</label>
-        <input
-          type="text"
-          name="detalleProblema"
-          class="form-control"
-          placeholder="<%=tique.dataValues.detalle_problema%>"
-        /><br />
-        <label class="form-label">Detalle Servicio</label>
-        <input
-          type="text"
-          name="detalleServicio"
-          class="form-control"
-          placeholder="<%=tique.dataValues.detalle_servicio%>"
-        /><br />
-        <label class="form-label">Criticidad</label>
-        <input
-          type="text"
-          name="criticidad"
-          class="form-control"
-          placeholder="<%=tique.dataValues.criticidad%>"
-        /><br />
-        <label class="form-label">Tipo de tique</label>
-        <select class="form-select" name="tipoTique">
-          <option value="1">problema</option>
-          <option value="2">consulta</option>
-          <option value="3">reclamo</option>
-          <option value="4">felicitacion</option>
-        </select>
-        <label class="form-label" style="margin-top: 1rem"
-          >Area A Asignar</label
-        >
-        <select class="form-select" name="area">
-          <option value="1">soporte tecnico</option>
-          <option value="2">redes</option>
-          <option value="3">software</option>
-        </select>
         <div class="center" style="margin-top: 1rem">
           <input type="hidden" value="<%=tique.dataValues.id%>" name="id" />
           <button type="submit" class="btn btn-primary">Enviar</button>

@@ -51,57 +51,44 @@
         </div>
       </div>
     </nav>
-    <h1 class="main-title">Ejecutivo mesa</h1>
-    <div class="container-agregar-ticket">
-      <form action="/crear-tique" method="post">
-        <label class="form-label">Rut cliente</label>
-        <input type="text" name="rut" class="form-control" required /><br />
-        <label class="form-label">Nombre cliente</label>
-        <input type="text" name="nombre" class="form-control" required /><br />
-        <label class="form-label">Telefono cliente</label>
-        <input type="int" name="telefono" class="form-control" required /><br />
-        <label class="form-label">Correo electronico cliente</label>
-        <input type="text" name="correo" class="form-control" required /><br />
-        <label class="form-label">Detalle problema</label>
-        <input
-          type="text"
-          name="detalleProblema"
-          class="form-control"
-          required
-        /><br />
-        <label class="form-label">Detalle Servicio</label>
-        <input
-          type="text"
-          name="detalleServicio"
-          class="form-control"
-          required
-        /><br />
-        <label class="form-label">Criticidad</label>
-        <input
-          type="text"
-          name="criticidad"
-          class="form-control"
-          required
-        /><br />
-        <label class="form-label">Tipo de tique</label>
-        <select class="form-select" name="tipoTique" required>
-          <option value="1">problema</option>
-          <option value="2">consulta</option>
-          <option value="3">reclamo</option>
-          <option value="4">felicitacion</option>
-        </select>
-        <label class="form-label" style="margin-top: 1rem"
-          >Area A Asignar</label
-        >
-        <select class="form-select" name="area" required>
-          <option value="1">soporte tecnico</option>
-          <option value="2">redes</option>
-          <option value="3">software</option>
-        </select>
-        <div class="center" style="margin-top: 1rem">
-          <button type="submit" class="btn btn-primary">Enviar</button>
-        </div>
-      </form>
+    <h1 class="main-title">Listado Tickets</h1>
+    <div class="container-listado-ticket">
+      <table class="table table-bordered table-hover table-striped">
+        <thead class="" style="background-color: #112d4e; color: #fff">
+          <th>Rut Cliente</th>
+          <th>Nombre Cliente</th>
+          <th>Telefono Cliente</th>
+          <th>Correo Cliente</th>
+          <th>Detalle Problema</th>
+          <th>Detalle Servicio</th>
+          <th>Criticidad</th>
+          <th>Observacion</th>
+          <th>Tipo Tique</th>
+          <th>Estado tique</th>
+          <th>Acciones</th>
+        </thead>
+        <tbody>
+          <% tiques.map((tique)=> { %>
+          <tr>
+            <td><%=tique.dataValues.rut_cliente%></td>
+            <td><%=tique.dataValues.nombre_cliente%></td>
+            <td><%=tique.dataValues.telefono_cliente%></td>
+            <td><%=tique.dataValues.correo_cliente%></td>
+            <td><%=tique.dataValues.detalle_problema%></td>
+            <td><%=tique.dataValues.detalle_servicio%></td>
+            <td><%=tique.dataValues.criticidad%></td>
+            <td><%=tique.dataValues.observacion%></td>
+            <td><%=tique.dataValues.tipo_tique_id%></td>
+            <td><%=tique.dataValues.estado_tique_id%></td>
+            <td>
+              <a href="/cerrar/tique/<%=tique.dataValues.id%>"
+                ><img width="30px" src="img/pencil.png"
+              /></a>
+            </td>
+          </tr>
+          <% })%>
+        </tbody>
+      </table>
     </div>
 
     <script
